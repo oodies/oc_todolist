@@ -20,6 +20,8 @@ class TaskController extends Controller
 
     /**
      * @Route("/tasks/create", name="task_create")
+     *
+     * @throws \LogicException
      */
     public function createAction(Request $request)
     {
@@ -29,8 +31,9 @@ class TaskController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $task->setAuthor($this->getUser());
 
+            $em = $this->getDoctrine()->getManager();
             $em->persist($task);
             $em->flush();
 
