@@ -90,7 +90,8 @@ class TaskController extends Controller
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
      *
-     *
+     * @throws \LogicException
+     * @throws NotFoundHttpException
      */
     public function deleteTaskAction(Task $task)
     {
@@ -104,7 +105,7 @@ class TaskController extends Controller
                 is_null($task->getAuthor())
             )
             or (
-                $task->getAuthor() == $user->getUser()
+               ($task->getAuthor() === $user)
             )
         )
         {
