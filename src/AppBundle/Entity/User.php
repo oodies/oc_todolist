@@ -14,6 +14,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class User implements UserInterface
 {
+    /** *******************************
+     *  PROPERTIES
+     */
+
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
@@ -38,6 +42,26 @@ class User implements UserInterface
      * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
      */
     private $email;
+
+    /**
+     * Roles of the user
+     *
+     * @var array
+     *
+     * @ORM\Column(
+     *      name="roles",
+     *      type="array",
+     *      nullable=false,
+     *      options={"comment"="Roles of the user"}
+     * )
+     *
+     * @Assert\Type("array")
+     */
+    private $roles = [];
+
+    /** *******************************
+     *  GETTER / SETTER
+     */
 
     public function getId()
     {
@@ -79,9 +103,40 @@ class User implements UserInterface
         $this->email = $email;
     }
 
+    /**
+     * Returns the roles granted to the user.
+     *
+     * <code>
+     * public function getRoles()
+     * {
+     *     return array('ROLE_USER');
+     * }
+     * </code>
+     *
+     * Alternatively, the roles might be stored on a ``roles`` property,
+     * and populated in any number of different ways when the user object
+     * is created.
+     *
+     * @return array The user roles
+     */
     public function getRoles()
     {
-        return array('ROLE_USER');
+        if (empty($this->roles)) {
+            return array('ROLE_USER');
+        }
+
+        return $this->roles;
+    }
+
+    /**
+     * @param array $roles
+     *
+     * @return User
+     */
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+        return $this;
     }
 
     public function eraseCredentials()
