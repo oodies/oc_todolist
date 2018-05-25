@@ -50,14 +50,21 @@ class User implements UserInterface
      *
      * @ORM\Column(
      *      name="roles",
-     *      type="array",
+     *      type="simple_array",
      *      nullable=false,
      *      options={"comment"="Roles of the user"}
      * )
-     *
-     * @Assert\Type("array")
      */
     private $roles = [];
+
+    /** *******************************
+     *  CONSTRUCT
+     */
+
+    public function __construct()
+    {
+        $this->roles = array('ROLE_USER');
+    }
 
     /** *******************************
      *  GETTER / SETTER
@@ -106,38 +113,27 @@ class User implements UserInterface
     /**
      * Returns the roles granted to the user.
      *
-     * <code>
-     * public function getRoles()
-     * {
-     *     return array('ROLE_USER');
-     * }
-     * </code>
-     *
-     * Alternatively, the roles might be stored on a ``roles`` property,
-     * and populated in any number of different ways when the user object
-     * is created.
-     *
-     * @return array The user roles
+     * @return string|array The user roles
      */
     public function getRoles()
     {
-        if (empty($this->roles)) {
-            return array('ROLE_USER');
-        }
-
         return $this->roles;
     }
 
     /**
-     * @param array $roles
+     * @param string|array $roles
      *
      * @return User
      */
-    public function setRoles(array $roles)
+    public function setRoles($roles)
     {
         $this->roles = $roles;
         return $this;
     }
+
+    /** *******************************
+     *  BEHAVIOR
+     */
 
     public function eraseCredentials()
     {
