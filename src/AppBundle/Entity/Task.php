@@ -40,11 +40,27 @@ class Task
      */
     private $isDone;
 
+    /**
+     * @var null|User
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     */
+    private $author;
+
+    /** *******************************
+     *  CONSTRUCT
+     */
+
     public function __construct()
     {
         $this->createdAt = new \Datetime();
         $this->isDone = false;
     }
+
+    /** *******************************
+     *  GETTER / SETTER
+     */
 
     public function getId()
     {
@@ -80,6 +96,29 @@ class Task
     {
         $this->content = $content;
     }
+
+    /**
+     * @return User
+     */
+    public function getAuthor()
+    {
+        return $this->author;
+    }
+
+    /**
+     * @param User $author
+     *
+     * @return Task
+     */
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+        return $this;
+    }
+
+    /** *******************************
+     *  BEHAVIOR
+     */
 
     public function isDone()
     {
