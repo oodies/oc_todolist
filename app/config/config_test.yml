@@ -14,3 +14,13 @@ web_profiler:
 
 swiftmailer:
     disable_delivery: true
+
+# Twig Configuration
+twig:
+    debug:            false
+    strict_variables: false
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        url: 'sqlite:///%kernel.root_dir%/../var/data/test.sqlite'
