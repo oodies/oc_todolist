@@ -15,6 +15,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 class User implements UserInterface
 {
     /** *******************************
+     *  CONSTANTS
+     */
+
+    const ROLE_DEFAULT = 'ROLE_USER';
+
+    /** *******************************
      *  PROPERTIES
      */
 
