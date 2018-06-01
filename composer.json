@@ -32,7 +32,10 @@
     "require-dev": {
         "sensio/generator-bundle": "^3.0",
         "symfony/phpunit-bridge": "^3.0",
-        "doctrine/doctrine-fixtures-bundle": "2.*"
+        "doctrine/doctrine-fixtures-bundle": "2.*",
+        "phpunit/phpunit": "^5.4",
+        "symfony/css-selector": "3.1.*",
+        "symfony/dom-crawler": "3.1.*"
     },
     "scripts": {
         "symfony-scripts": [
