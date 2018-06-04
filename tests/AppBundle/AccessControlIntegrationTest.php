@@ -24,6 +24,8 @@ class AccessControlIntegrationTest extends WebTestCase
     use ContextTestTrait;
 
 
+    protected $idTask = null;
+
     /**
      * Sets up the fixture, for example, open a network connection.
      * This method is called before a test is executed.
@@ -33,6 +35,7 @@ class AccessControlIntegrationTest extends WebTestCase
     {
         $this->client = static::CreateClient();
         $this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
+        $this->idTask = (string)$this->fixtureCreateTaskTest();
     }
 
 
@@ -70,16 +73,27 @@ class AccessControlIntegrationTest extends WebTestCase
                 $this->assertRegExp('/\/login$/', $this->client->getResponse()->headers->get('location'));
                 break;
             case "serverError":
-                $this->assertTrue($this->client->getResponse()->isServerError());
+                $this->assertTrue(
+                    $this->client->getResponse()->isServerError(),
+                    'Error : ' . $this->client->getResponse()->getStatusCode()
+                );
                 break;
             case "redirect":
-                $this->assertTrue($this->client->getResponse()->isRedirect());
+                $this->assertTrue(
+                    $this->client->getResponse()->isRedirect(),
+                    'Error : ' . $this->client->getResponse()->getStatusCode()
+                );
                 break;
             case "forbidden":
-                $this->assertTrue($this->client->getResponse()->isForbidden());
+                $this->assertTrue(
+                    $this->client->getResponse()->isForbidden(),
+                    'Error : ' . $this->client->getResponse()->getStatusCode()
+                );
                 break;
             case "ok":
-                $this->assertTrue($this->client->getResponse()->isOk());
+                $this->assertTrue(
+                    $this->client->getResponse()->isOk(), 'Error : ' . $this->client->getResponse()->getStatusCode()
+                );
                 break;
         }
     }
@@ -89,6 +103,9 @@ class AccessControlIntegrationTest extends WebTestCase
      */
     public function routeForTest()
     {
+        // STUB go to feature
+        $idTask = '101';
+
         return [
             ['0', '/', 'noAuth', 'signIn'],
             ['1', '/', 'userAuth', 'ok'],
@@ -102,21 +119,20 @@ class AccessControlIntegrationTest extends WebTestCase
             ['9', '/tasks/create', 'noAuth', 'signIn'],
             ['10', '/tasks/create', 'userAuth', 'ok'],
             ['11', '/tasks/create', 'adminAuth', 'ok'],
-            ['12', '/tasks/1/edit', 'noAuth', 'signIn'],
-            ['13', '/tasks/1/edit', 'userAuth', 'ok'],
-            ['14', '/tasks/1/edit', 'adminAuth', 'ok'],
-            ['15', '/tasks/1/toggle', 'noAuth', 'signIn'],
-            ['16', '/tasks/1/toggle', 'userAuth', 'ok'],
-            ['17', '/tasks/1/toggle', 'adminAuth', 'ok'],
-            ['18', '/tasks/1/delete', 'noAuth', 'signIn'],
-            ['19', '/tasks/1/delete', 'userAuth', 'ok'],
-            ['20', '/tasks/1/delete', 'adminAuth', 'ok'],
-            ['21', '/users', 'noAuth', 'signIn'],
-            ['22', '/users', 'userAuth', 'forbidden'],
-            ['23', '/users', 'adminAuth', 'ok'],
-            ['24', '/users/create', 'noAuth', 'signIn'],
-            ['25', '/users/create', 'userAuth', 'forbidden'],
-            ['26', '/users/create', 'adminAuth', 'ok']
+            ['12', sprintf('/tasks/%s/edit', $idTask), 'noAuth', 'signIn'],
+            ['13', sprintf('/tasks/%s/edit', $idTask), 'userAuth', 'ok'],
+            ['14', sprintf('/tasks/%s/edit', $idTask), 'adminAuth', 'ok'],
+            ['15', sprintf('/tasks/%s/toggle', $idTask), 'noAuth', 'signIn'],
+            ['16', sprintf('/tasks/%s/toggle', $idTask), 'userAuth', 'redirect'],
+            ['17', sprintf('/tasks/%s/toggle', $idTask), 'adminAuth', 'redirect'],
+            ['18', sprintf('/tasks/%s/toggle', $idTask), 'noAuth', 'signIn'],
+            ['19', sprintf('/tasks/%s/delete', $idTask), 'userAuth', 'redirect'],
+            ['20', '/users', 'noAuth', 'signIn'],
+            ['21', '/users', 'userAuth', 'forbidden'],
+            ['22', '/users', 'adminAuth', 'ok'],
+            ['23', '/users/create', 'noAuth', 'signIn'],
+            ['24', '/users/create', 'userAuth', 'forbidden'],
+            ['25', '/users/create', 'adminAuth', 'ok']
         ];
     }
 }
