@@ -12,11 +12,11 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\ContextTestTrait;
 
 /**
- * Class DefaultControllerTest
+ * Class DefaultControllerWebTest
  *
  * @package Tests\AppBundle\Controller
  */
-class DefaultControllerTest extends WebTestCase
+class DefaultControllerWebTest extends WebTestCase
 {
     /** *******************************
      *  TRAIT

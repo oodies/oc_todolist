@@ -12,11 +12,11 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\ContextTestTrait;
 
 /**
- * Class AccessControlTest
+ * Class AccessControlIntegrationTest
  *
  * @package Tests\AppBundle
  */
-class AccessControlTest extends WebTestCase
+class AccessControlIntegrationTest extends WebTestCase
 {
     /** *******************************
      *  TRAIT
@@ -37,8 +37,19 @@ class AccessControlTest extends WebTestCase
 
     /**
      * @dataProvider routeForTest
+     *
+     * @param string $numTest
+     * @param string $url
+     * @param string $user
+     * @param string $response
+     *
+     * @throws \InvalidArgumentException
+     * @throws \PHPUnit_Framework_AssertionFailedError
+     * @throws \PHPUnit_Framework_Exception
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
+     * @throws \UnexpectedValueException
      */
-    public function testListUser($set, $url, $user, $response)
+    public function testListUser($numTest, $url, $user, $response)
     {
         switch ($user) {
             case "userAuth":

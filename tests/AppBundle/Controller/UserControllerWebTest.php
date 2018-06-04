@@ -12,11 +12,11 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\ContextTestTrait;
 
 /**
- * Class UserControllerTest
+ * Class UserControllerWebTest
  *
  * @package Tests\AppBundle\Controller
  */
-class UserControllerTest extends WebTestCase
+class UserControllerWebTest extends WebTestCase
 {
     /** *******************************
      *  TRAIT
@@ -99,17 +99,16 @@ class UserControllerTest extends WebTestCase
                 'user[username]'         => $this->getUsernameTest(),
                 'user[password][first]'  => '12345',
                 'user[password][second]' => '12345',
-                'user[email]'            => 'email@mail.com'
+                'user[email]'            => 'email@mail.com',
+                'user[roles]'            => 'ROLE_USER'
             ]
         );
-        $form['user[roles]']->select('ROLE_USER');
 
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
         $this->assertEquals(1, $crawler->filter('div.alert.alert-success')->count());
     }
-
 
     /**
      * Feature: Edit an user
@@ -144,10 +143,10 @@ class UserControllerTest extends WebTestCase
                 'user[username]'         => $this->getUsernameTest(),
                 'user[password][first]'  => '6789',
                 'user[password][second]' => '6789',
-                'user[email]'            => 'email2@mail.com'
+                'user[email]'            => 'email2@mail.com',
+                'user[roles]'            => 'ROLE_ADMIN'
             ]
         );
-        $form['user[roles]']->select('ROLE_USER');
 
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();

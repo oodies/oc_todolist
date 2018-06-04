@@ -12,11 +12,11 @@ use Tests\ContextTestTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
- * Class SecurityControllerTest
+ * Class SecurityControllerWebTest
  *
  * @package Tests\AppBundle\Controller
  */
-class SecurityControllerTest extends WebTestCase
+class SecurityControllerWebTest extends WebTestCase
 {
     /** *******************************
      *  TRAIT
@@ -46,7 +46,10 @@ class SecurityControllerTest extends WebTestCase
      *      When: I am on "/login"
      *      Then: I redirect to "/"
      *
+     * @throws \InvalidArgumentException
      * @throws \PHPUnit_Framework_AssertionFailedError
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
+     * @throws \UnexpectedValueException
      */
     public function testLoginWithAuthenticatedUser()
     {
@@ -65,8 +68,11 @@ class SecurityControllerTest extends WebTestCase
      *      When: I am on "/logout"
      *      Then: I redirect to "/login"
      *
+     * @throws \InvalidArgumentException
      * @throws \LogicException
      * @throws \PHPUnit_Framework_Exception
+     * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
+     * @throws \UnexpectedValueException
      */
     public function testLogout()
     {
