@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -114,6 +115,30 @@ class Task
     {
         $this->author = $author;
         return $this;
+    }
+
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return bool
+     */
+    public function isAuthor(UserInterface $user)
+    {
+        if (
+            (
+                in_array('ROLE_ADMIN', $user->getRoles())
+                and
+                is_null($this->getAuthor())
+            )
+            or (
+            ($this->getAuthor() === $user)
+            )
+        ) {
+            return true;
+        }
+
+        return false;
     }
 
     /** *******************************
