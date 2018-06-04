@@ -3,9 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Task;
-use AppBundle\Entity\User;
 use AppBundle\Form\TaskType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -68,9 +68,9 @@ class TaskController extends Controller
 
         return $this->render(
             'task/edit.html.twig', [
-            'form' => $form->createView(),
-            'task' => $task,
-        ]
+                                     'form' => $form->createView(),
+                                     'task' => $task,
+                                 ]
         );
     }
 
@@ -90,33 +90,20 @@ class TaskController extends Controller
     /**
      * @Route("/tasks/{id}/delete", name="task_delete")
      *
+     * @Security("task.isAuthor(user)")
+     *
      * @throws \LogicException
      * @throws NotFoundHttpException
      */
     public function deleteTaskAction(Task $task)
     {
-        /** @var User $user */
-        $user = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($task);
+        $em->flush();
 
-        if (
-            (
-                in_array('ROLE_ADMIN', $user->getRoles())
-                and
-                is_null($task->getAuthor())
-            )
-            or (
-               ($task->getAuthor() === $user)
-            )
-        )
-        {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($task);
-            $em->flush();
+        $this->addFlash('success', 'La tâche a bien été supprimée.');
 
-            $this->addFlash('success', 'La tâche a bien été supprimée.');
-
-            return $this->redirectToRoute('task_list');
-        }
+        return $this->redirectToRoute('task_list');
 
         throw new NotFoundHttpException(
             sprintf('You are not authorized to delete this task')
