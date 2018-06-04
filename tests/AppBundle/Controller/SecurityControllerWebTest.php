@@ -36,6 +36,7 @@ class SecurityControllerWebTest extends WebTestCase
     public function setUp()
     {
         $this->client = static::CreateClient();
+        $this->em = static::$kernel->getContainer()->get('doctrine')->getManager();
     }
 
 

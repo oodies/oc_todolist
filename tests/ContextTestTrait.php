@@ -82,11 +82,12 @@ trait ContextTestTrait
     {
         /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
         $session = $this->client->getContainer()->get('session');
+        $user = $this->em->getRepository('AppBundle:User')->findOneBy(['username' => 'admin']);
 
         // the firewall context (defaults to the firewall name)
         $firewall = 'main';
 
-        $token = new UsernamePasswordToken('admin', '12345', $firewall, ['ROLE_ADMIN']);
+        $token = new UsernamePasswordToken($user, '12345', $firewall, ['ROLE_ADMIN']);
         $session->set('_security_' . $firewall, serialize($token));
         $session->save();
 
@@ -103,11 +104,12 @@ trait ContextTestTrait
     {
         /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
         $session = $this->client->getContainer()->get('session');
+        $user = $this->em->getRepository('AppBundle:User')->findOneBy(['username' => 'user']);
 
         // the firewall context (defaults to the firewall name)
         $firewall = 'main';
 
-        $token = new UsernamePasswordToken('user', '12345', $firewall, ['ROLE_USER']);
+        $token = new UsernamePasswordToken($user, '12345', $firewall, ['ROLE_USER']);
         $session->set('_security_' . $firewall, serialize($token));
         $session->save();
 
