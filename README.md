@@ -73,8 +73,9 @@ http://localhost:8080/web/app_dev.php
 
 ## Users
 To access the application's various features
-User | login | Password
----- | ----- | --------
+
+User     | login    | Password
+-------- | -------- | --------
 generic user  | user | 12345
 10 special users | username_[1..9] | 12345
-Administrator| admin | 12345
+Administrator | admin | 12345
