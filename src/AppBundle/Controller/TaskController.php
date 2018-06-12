@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of oc_todolist project
+ *
+ * @author: Sébastien CHOMY <sebastien.chomy@gmail.com>
+ * @since 2018/05
+ */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Task;
@@ -18,12 +25,15 @@ class TaskController extends Controller
     public function listAction()
     {
         return $this->render(
-            'task/list.html.twig', ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll()]
+            'task/list.html.twig',
+            ['tasks' => $this->getDoctrine()->getRepository('AppBundle:Task')->findAll()]
         );
     }
 
     /**
      * @Route("/tasks/create", name="task_create")
+     *
+     * @param Request $request
      *
      * @throws \LogicException
      */
@@ -51,6 +61,9 @@ class TaskController extends Controller
 
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
+     *
+     * @param Task    $task
+     * @param Request $request
      */
     public function editAction(Task $task, Request $request)
     {
@@ -67,15 +80,18 @@ class TaskController extends Controller
         }
 
         return $this->render(
-            'task/edit.html.twig', [
-                                     'form' => $form->createView(),
-                                     'task' => $task,
-                                 ]
+            'task/edit.html.twig',
+            [
+                'form' => $form->createView(),
+                'task' => $task,
+            ]
         );
     }
 
     /**
      * @Route("/tasks/{id}/toggle", name="task_toggle")
+     *
+     * @param Task $task
      */
     public function toggleTaskAction(Task $task)
     {
@@ -91,6 +107,8 @@ class TaskController extends Controller
      * @Route("/tasks/{id}/delete", name="task_delete")
      *
      * @Security("task.isAuthor(user)")
+     *
+     * @param Task $task
      *
      * @throws \LogicException
      * @throws NotFoundHttpException

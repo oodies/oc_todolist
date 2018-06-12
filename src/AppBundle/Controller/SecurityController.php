@@ -1,17 +1,26 @@
 <?php
 
+/*
+ * This file is part of oc_todolist project
+ *
+ * @author: Sébastien CHOMY <sebastien.chomy@gmail.com>
+ * @since 2018/05
+ */
+
 namespace AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+/**
+ * Class SecurityController.
+ */
 class SecurityController extends Controller
 {
     /**
      * @Route("/login", name="login")
      */
-    public function loginAction(Request $request)
+    public function loginAction()
     {
         $authenticationUtils = $this->get('security.authentication_utils');
 

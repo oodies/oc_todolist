@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of oc_todolist project
+ *
+ * @author: Sébastien CHOMY <sebastien.chomy@gmail.com>
+ * @since 2018/05
+ */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
@@ -18,13 +25,18 @@ class UserController extends Controller
      */
     public function listAction()
     {
-        return $this->render('user/list.html.twig', ['users' => $this->getDoctrine()->getRepository('AppBundle:User')->findAll()]);
+        return $this->render(
+            'user/list.html.twig',
+            ['users' => $this->getDoctrine()->getRepository('AppBundle:User')->findAll()]
+        );
     }
 
     /**
      * @Route("/users/create", name="user_create")
      *
      * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param Request $request
      */
     public function createAction(Request $request)
     {
@@ -53,6 +65,9 @@ class UserController extends Controller
      * @Route("/users/{id}/edit", name="user_edit")
      *
      * @Security("has_role('ROLE_ADMIN')")
+     *
+     * @param User    $user
+     * @param Request $request
      */
     public function editAction(User $user, Request $request)
     {
