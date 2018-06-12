@@ -1,0 +1,60 @@
+# .blackfire.yml
+tests:
+    "All pages are fast":
+        path: "/.*"
+        assertions:
+            - main.wall_time < 50ms
+            - main.memory < 2Mb
+
+    "[SQL] No more than 8 queries SQL":
+        assertions:
+            - metrics.sql.queries.count <= 8
+
+    "[SQL] limit the number of DB connections":
+        assertions:
+            - metrics.sql.connections.count <= 1
+
+    "[TWIG] Twig displays and renders":
+        path: "/.*"
+        assertions:
+            - metrics.twig.display.count + metrics.twig.render.count < 5
+
+    "[SF] Symfony events dispatched":
+        path: "/.*"
+        assertions:
+            - metrics.symfony.events.count < 10
+
+    "[Good practice] Symfony Http cache actived":
+        assertions:
+            - metrics.symfony.http_cache.count == 1
+
+    "[Good pratice] never send emails synchronously":
+        assertions:
+            - metrics.emails.sent.count == 0
+
+    "[Good pratice] no Twig/Smarty compilation":
+        assertions:
+            - is_dev() or metrics.twig.compile.count == 0
+            - is_dev() or metrics.smarty.compile.count == 0
+
+    "[Good pratice] no Symfony metadata checks":
+        assertions:
+            - is_dev() or metrics.symfony.config_check.count == 0
+
+    "[Good pratice] no Doctrine parsing":
+        assertions:
+            - is_dev() or (metrics.doctrine.annotations.parsed.count + metrics.doctrine.annotations.read.count + metrics.doctrine.dql.parsed.count + metrics.doctrine.entities.metadata.count + metrics.doctrine.proxies.generated.count) == 0
+
+    "[Good pratice] no YAML loaded":
+        assertions:
+            - is_dev() or metrics.symfony.yaml.reads.count == 0
+
+    "[Good pratice] Assetic controller must not be called (assets should be dumped)":
+        assertions:
+            - is_dev() or metrics.assetic.controller.calls.count == 0
+
+    "[PERF] Memory evolution":
+        path: "/.*"
+        assertions:
+            - percent(main.memory) < 10%
+            - diff(main.memory) < 300kb
