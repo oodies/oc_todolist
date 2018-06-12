@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * This file is part of oc_todolist project
+ *
+ * @author: Sébastien CHOMY <sebastien.chomy@gmail.com>
+ * @since 2018/05
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;

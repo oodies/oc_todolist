@@ -1,11 +1,18 @@
 <?php
 
+/*
+ * This file is part of oc_todolist project
+ *
+ * @author: Sébastien CHOMY <sebastien.chomy@gmail.com>
+ * @since 2018/05
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Table("user")
@@ -14,10 +21,6 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class User implements UserInterface
 {
-    /** *******************************
-     *  CONSTANTS
-     */
-
     const ROLE_DEFAULT = 'ROLE_USER';
 
     /** *******************************
