@@ -12,6 +12,7 @@ $finder = PhpCsFixer\Finder::create()
 
 $config = PhpCsFixer\Config::create()
                            ->setRiskyAllowed(true)
+                           ->setLineEnding("\r\n")
                            ->setRules(
                                [
                                    '@DoctrineAnnotation'                           => true,
