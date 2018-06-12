@@ -1,5 +1,6 @@
 <?php
-/**
+
+/*
  * This file is part of oc_todolist project
  *
  * @author: Sébastien CHOMY <sebastien.chomy@gmail.com>
@@ -16,16 +17,10 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoder;
 
 /**
- * Class UserFixtures
- *
- * @package AppBundle\DataFixtures\ORM
+ * Class UserFixtures.
  */
 class UserFixtures extends Fixture implements ContainerAwareInterface
 {
-    /** *******************************
-     *  PROPERTIES
-     */
-
     /**
      * @var ContainerInterface
      */
@@ -36,12 +31,8 @@ class UserFixtures extends Fixture implements ContainerAwareInterface
      */
     protected $encoder;
 
-    /** *******************************
-     *  METHODS
-     */
-
     /**
-     * Load data fixtures with the passed EntityManager
+     * Load data fixtures with the passed EntityManager.
      *
      * @param ObjectManager $manager
      */
@@ -63,20 +54,28 @@ class UserFixtures extends Fixture implements ContainerAwareInterface
         $user->setRoles(['ROLE_ADMIN']);
         $manager->persist($user);
 
+        $manager->flush();
+
         // other user with roles ROLE_USER by default
-        for ($i = 1; $i <= 10; $i++) {
+        for ($i = 1; $i <= 20; ++$i) {
             $user = new User();
-            $user->setUsername("username_$i");
-            $user->setEmail("username_$i@mail.com");
+            $user->setUsername("username_${i}");
+            $user->setEmail("username_${i}@mail.com");
             $user->setPassword($this->encoder->encodePassword($user, '12345'));
 
             $manager->persist($user);
+            unset($user);
+
+            // Flush every 10 entities and clear manager
+            if (0 === $i % 10) {
+                $manager->flush();
+                $manager->clear('AppBundle\Entity\User');
+            }
         }
-        $manager->flush();
     }
 
     /**
-     * @param ContainerInterface|null $container
+     * @param null|ContainerInterface $container
      *
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException
      * @throws \Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException
