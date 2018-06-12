@@ -25,6 +25,9 @@ $config = PhpCsFixer\Config::create()
                                    'array_indentation'                             => true,
                                    'array_syntax'                                  => ['syntax' => 'short'],
                                    'blank_line_before_statement'                   => true,
+                                   // [@symfony] override
+                                   'binary_operator_spaces'                        =>
+                                       ['operators' => ['=>' => 'align_single_space_minimal']],
                                    'combine_consecutive_issets'                    => true,
                                    'combine_consecutive_unsets'                    => true,
                                    'comment_to_phpdoc'                             => true,
@@ -68,6 +71,7 @@ $config = PhpCsFixer\Config::create()
                                            'curly_brace_block'
                                        ]
                                    ],
+                                   'no_multiline_whitespace_around_double_arrow'   => false, // [@Symfony] default true
                                    'no_null_property_initialization'               => true,
                                    'no_short_echo_tag'                             => true,
                                    'no_superfluous_elseif'                         => true,
