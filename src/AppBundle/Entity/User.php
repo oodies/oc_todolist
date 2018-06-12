@@ -23,11 +23,9 @@ class User implements UserInterface
 {
     const ROLE_DEFAULT = 'ROLE_USER';
 
-    /** *******************************
-     *  PROPERTIES
-     */
-
     /**
+     * @var int
+     *
      * @ORM\Column(type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -35,85 +33,111 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=25, unique=true)
+     *
      * @Assert\NotBlank(message="Vous devez saisir un nom d'utilisateur.")
      */
     private $username;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=64)
      */
     private $password;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", length=60, unique=true)
+     *
      * @Assert\NotBlank(message="Vous devez saisir une adresse email.")
      * @Assert\Email(message="Le format de l'adresse n'est pas correcte.")
      */
     private $email;
 
     /**
-     * Roles of the user
+     * Roles of the user.
      *
      * @var array
      *
      * @ORM\Column(
-     *      name="roles",
-     *      type="simple_array",
-     *      nullable=false,
-     *      options={"comment"="Roles of the user"}
+     *     name="roles",
+     *     type="simple_array",
+     *     nullable=false,
+     *     options={"comment": "Roles of the user"}
      * )
      */
     private $roles = [];
 
-    /** *******************************
-     *  CONSTRUCT
+    /**
+     * User constructor.
      */
-
     public function __construct()
     {
-        $this->roles = array('ROLE_USER');
+        $this->roles = ['ROLE_USER'];
     }
 
-    /** *******************************
-     *  GETTER / SETTER
+    /**
+     * @return int
      */
-
     public function getId()
     {
         return $this->id;
     }
 
+    /**
+     * @return string
+     */
     public function getUsername()
     {
         return $this->username;
     }
 
+    /**
+     * @param string $username
+     */
     public function setUsername($username)
     {
         $this->username = $username;
     }
 
+    /**
+     * @return null|string|void
+     */
     public function getSalt()
     {
-        return null;
     }
 
+    /**
+     * @return string
+     */
     public function getPassword()
     {
         return $this->password;
     }
 
+    /**
+     * @param string $password
+     */
     public function setPassword($password)
     {
         $this->password = $password;
     }
 
+    /**
+     * @return string
+     */
     public function getEmail()
     {
         return $this->email;
     }
 
+    /**
+     * @param string $email
+     */
     public function setEmail($email)
     {
         $this->email = $email;
@@ -122,7 +146,7 @@ class User implements UserInterface
     /**
      * Returns the roles granted to the user.
      *
-     * @return string|array The user roles
+     * @return array|string The user roles
      */
     public function getRoles()
     {
@@ -130,20 +154,20 @@ class User implements UserInterface
     }
 
     /**
-     * @param string|array $roles
+     * @param array $roles
      *
      * @return User
      */
     public function setRoles($roles)
     {
         $this->roles = $roles;
+
         return $this;
     }
 
-    /** *******************************
-     *  BEHAVIOR
+    /**
+     * {@inheritdoc}
      */
-
     public function eraseCredentials()
     {
     }

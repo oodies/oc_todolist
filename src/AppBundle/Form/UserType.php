@@ -20,8 +20,15 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
+/**
+ * Class UserType.
+ */
 class UserType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array                $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -53,7 +60,8 @@ class UserType extends AbstractType
                 ]
             )
             ->addEventListener(FormEvents::PRE_SET_DATA, [$this, 'onPreSetData'])
-            ->addEventListener(FormEvents::POST_SUBMIT, [$this, 'onPostSubmit']);
+            ->addEventListener(FormEvents::POST_SUBMIT, [$this, 'onPostSubmit'])
+        ;
     }
 
     /**
@@ -77,7 +85,7 @@ class UserType extends AbstractType
         /** @var User $user */
         $user = $formEvent->getData();
         // Conversion string to Array to user->roles
-        $user->setRoles((array)$user->getRoles());
+        $user->setRoles((array) $user->getRoles());
 
         $formEvent->setData($user);
     }
