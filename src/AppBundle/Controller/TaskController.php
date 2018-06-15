@@ -15,7 +15,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class TaskController.
@@ -114,7 +113,6 @@ class TaskController extends Controller
      * @param Task $task
      *
      * @throws \LogicException
-     * @throws NotFoundHttpException
      */
     public function deleteTaskAction(Task $task)
     {
@@ -125,9 +123,5 @@ class TaskController extends Controller
         $this->addFlash('success', 'La tâche a bien été supprimée.');
 
         return $this->redirectToRoute('task_list');
-
-        throw new NotFoundHttpException(
-            sprintf('You are not authorized to delete this task')
-        );
     }
 }
