@@ -43,7 +43,7 @@ class TaskTest extends TestCase
         $this->assertEquals($date, $this->task->getCreatedAt());
     }
 
-    public function tesTitle()
+    public function testTitle()
     {
         $this->assertNull($this->task->getTitle());
 
