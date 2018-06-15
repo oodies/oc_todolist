@@ -35,6 +35,8 @@ class UserFixtures extends Fixture implements ContainerAwareInterface
      * Load data fixtures with the passed EntityManager.
      *
      * @param ObjectManager $manager
+     *
+     * @throws \BadMethodCallException
      */
     public function load(ObjectManager $manager)
     {
@@ -45,6 +47,8 @@ class UserFixtures extends Fixture implements ContainerAwareInterface
         $user->setPassword($this->encoder->encodePassword($user, '12345'));
         $user->setRoles(['ROLE_USER']);
         $manager->persist($user);
+        $this->addReference('user', $user);
+        unset($user);
 
         // Specific user with roles ROLE_ADMIN
         $user = new User();
@@ -53,6 +57,8 @@ class UserFixtures extends Fixture implements ContainerAwareInterface
         $user->setPassword($this->encoder->encodePassword($user, '12345'));
         $user->setRoles(['ROLE_ADMIN']);
         $manager->persist($user);
+        $this->addReference('admin', $user);
+        unset($user);
 
         $manager->flush();
 
@@ -64,6 +70,7 @@ class UserFixtures extends Fixture implements ContainerAwareInterface
             $user->setPassword($this->encoder->encodePassword($user, '12345'));
 
             $manager->persist($user);
+            $this->addReference("username_${i}", $user);
             unset($user);
 
             // Flush every 10 entities and clear manager
